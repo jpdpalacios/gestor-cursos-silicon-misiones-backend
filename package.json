@@ -1,0 +1,21 @@
+{
+  "name": "gestor-cursos-silicon-misiones-backend",
+  "version": "1.0.0",
+  "description": "Este es el repositorio de la API para el Gestor de Cursos de Silicon Misiones. Esta API está construida utilizando Node.js y Express.",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpdpalacios/gestor-cursos-silicon-misiones-backend.git"
+  },
+  "keywords": [],
+  "author": "Jermías Pablo David Palacios",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpdpalacios/gestor-cursos-silicon-misiones-backend/issues"
+  },
+  "homepage": "https://github.com/jpdpalacios/gestor-cursos-silicon-misiones-backend#readme"
+}
