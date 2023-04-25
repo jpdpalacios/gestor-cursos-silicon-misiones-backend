@@ -40,6 +40,33 @@ const studentController = {
             });
         }
     },
+    update: async (req, res) => {
+        let id_alumno = req.params.id;
+        let datos_alumno = req.body;
+
+        try {
+            let alumno = await DB.Alumno.findOne({ where: { id: id_alumno } });
+            if (!alumno) {
+                return res.status(404).json({
+                    message: "No se encontró el alumno con el ID especificado",
+                });
+            }
+
+            await DB.sequelize.transaction(async (t) => {
+                await alumno.update(datos_alumno, { transaction: t });
+            });
+
+            return res.status(200).json({
+                message: "El alumno ha sido actualizado exitosamente",
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: "Ocurrió un error al actualizar el alumno",
+                error: error,
+            });
+        }
+    },
     delete: async (req, res) => {
         let id_alumno = req.params.id;
 

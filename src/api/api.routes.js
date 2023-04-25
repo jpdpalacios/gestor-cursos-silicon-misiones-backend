@@ -11,6 +11,7 @@ router.put('/courses/update/:id', courseController.update)
 
 router.get('/students', studentController.index)
 router.post('/students/create', studentController.create)
+router.put('/students/update/:id', studentController.update)
 router.delete('/students/delete/:id', studentController.delete)
 
 
