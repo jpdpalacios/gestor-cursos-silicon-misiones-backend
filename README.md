@@ -1,6 +1,6 @@
 # Gestor de Cursos Silicon Misiones - Backend
 
-Este es el repositorio de la API para el Gestor de Cursos de Silicon Misiones. Esta API está construida utilizando Node.js y Express.
+Este es el repositorio de la API para el Gestor de Cursos de Silicon Misiones. Esta API está construida utilizando Node.js, Express y MySQL.
 
 ## Instalación
 
@@ -17,10 +17,11 @@ Este es el repositorio de la API para el Gestor de Cursos de Silicon Misiones. E
    npm install
    ```
 
-## Configuración
+## Requisitos
 
-Tienes que tener XAMMP Control Panel para poder inicializar la db.
-Para configurar la base de datos y otros valores de configuración, es requerido un archivo `.env` en la raíz del proyecto.
+Tener XAMMP Control Panel e inicializar MySQL y Apache.
+
+Archivo DAM de la base de datos.
 
 ## Ejecución
 
