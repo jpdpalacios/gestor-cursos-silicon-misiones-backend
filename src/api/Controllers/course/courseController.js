@@ -51,6 +51,26 @@ const CourseController = {
                 error: error,
             });
         }
+    },
+    delete: async (req, res) => {
+        try {
+            const curso = await DB.Curso.findOne({ where: { id: req.params.id } });
+            if (!curso) {
+                return res.status(404).json({
+                    message: "No se encontró el curso con el ID especificado",
+                });
+            }
+            await curso.destroy();
+            return res.status(200).json({
+                message: "El curso ha sido eliminado exitosamente",
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: "Ocurrió un error al eliminar el curso",
+                error: error,
+            });
+        }
     }
 }
 
