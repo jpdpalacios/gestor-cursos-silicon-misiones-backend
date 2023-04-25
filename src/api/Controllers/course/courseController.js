@@ -28,6 +28,29 @@ const CourseController = {
                 error: error,
             });
         }
+    },
+    create: async (req, res) => {
+        try {
+            let curso = await DB.Curso.create({
+                nombre: req.body.nombre,
+                descripcion: req.body.descripcion,
+                imagen: req.body.imagen ? req.body.imagen : 'imagen-default.jpg',
+                anio: req.body.anio,
+                activo: req.body.activo ? req.body.activo : false
+            });
+
+            return res.status(200).json({
+                data: curso,
+                status: 200,
+                created: "ok"
+            })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: "Ocurrió un error al crear el curso",
+                error: error,
+            });
+        }
     }
 }
 
