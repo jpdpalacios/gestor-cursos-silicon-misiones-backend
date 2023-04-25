@@ -31,13 +31,7 @@ const CourseController = {
     },
     create: async (req, res) => {
         try {
-            let curso = await DB.Curso.create({
-                nombre: req.body.nombre,
-                descripcion: req.body.descripcion,
-                imagen: req.body.imagen ? req.body.imagen : 'imagen-default.jpg',
-                anio: req.body.anio,
-                activo: req.body.activo ? req.body.activo : false
-            });
+            let curso = await DB.Curso.create(req.body);
 
             return res.status(200).json({
                 data: curso,
