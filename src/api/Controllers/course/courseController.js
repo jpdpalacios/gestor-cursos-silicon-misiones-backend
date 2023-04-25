@@ -1,7 +1,9 @@
 const DB = require('../../../database/models')
 const Op = DB.Sequelize.Op;
-let multer = require("multer");
-let path = require("path");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+
 
 const CourseController = {
     index: async (req, res) => {
@@ -66,7 +68,7 @@ const CourseController = {
                 return res.status(200).json({
                     data: course,
                     status: 200,
-                    created: "ok"
+                    message: "El curso ha sido creado exitosamente",
                 })
             } catch (error) {
                 console.error(error);
@@ -82,31 +84,73 @@ const CourseController = {
     update: async (req, res) => {
         let id_curso = req.params.id;
         let datos_curso = req.body;
-
+      
         try {
-            let curso = await DB.Curso.findOne({ where: { id: id_curso } });
-            if (!curso) {
-                return res.status(404).json({
-                    message: "No se encontró el curso con el ID especificado",
-                });
+          let curso = await DB.Curso.findOne({ where: { id: id_curso } });
+          if (!curso) {
+            return res.status(404).json({
+              message: "No se encontró el curso con el ID especificado",
+            });
+          }
+      
+          let pathCourse = path.join(__dirname, "./../../../../public/images/courses/");
+          let storage = multer.diskStorage({
+            destination: pathCourse,
+            filename: function (req, file, cb) {
+              cb(
+                null,
+                file.fieldname + "-" + Date.now() + "-" + file.originalname
+              );
+            },
+          });
+      
+          let upload = multer({ storage: storage }).single("imagen");
+      
+          upload(req, res, async function (err) {
+            if (err) {
+              console.log(err);
+              return res.status(500).json({
+                message: "Ocurrió un error al subir la imagen",
+                error: err,
+              });
             }
-
-            await DB.sequelize.transaction(async (t) => {
+      
+            try {
+              if (req.file) {
+                if (curso.imagen) {
+                  let pathImagen = path.join(pathCourse, curso.imagen);
+                  if (fs.existsSync(pathImagen)) {
+                    fs.unlinkSync(pathImagen);
+                  }
+                }
+      
+                datos_curso.imagen = req.file.filename;
+              }
+      
+              await DB.sequelize.transaction(async (t) => {
                 await curso.update(datos_curso, { transaction: t });
-            });
-
-            return res.status(200).json({
+              });
+      
+              return res.status(200).json({
                 message: "El curso ha sido actualizado exitosamente",
-            });
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({
+              });
+            } catch (error) {
+              console.error(error);
+              return res.status(500).json({
                 message: "Ocurrió un error al actualizar el curso",
                 error: error,
-            });
+              });
+            }
+          });
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({
+            message: "Ocurrió un error al actualizar el curso",
+            error: error,
+          });
         }
-    },
-    delete: async (req, res) => {
+      },
+          delete: async (req, res) => {
         try {
             const curso = await DB.Curso.findOne({ where: { id: req.params.id } });
             if (!curso) {
