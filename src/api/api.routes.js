@@ -9,5 +9,6 @@ router.post('/courses/create', courseController.create)
 
 router.get('/students', studentController.index)
 router.post('/students/create', studentController.create)
+router.delete('/students/delete/:id', studentController.delete)
 
 module.exports = router;
