@@ -15,6 +15,8 @@ router.post('/students/create', studentController.create)
 router.put('/students/update/:id', studentController.update)
 router.delete('/students/delete/:id', studentController.delete)
 
+//router.post('/users/login', userController.login)
+
 router.get('/media/image/course/:id', imageController.showImageCourse)
 
 module.exports = router;
