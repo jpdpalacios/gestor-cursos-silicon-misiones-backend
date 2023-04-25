@@ -1,5 +1,7 @@
 const DB = require('../../../database/models')
 const Op = DB.Sequelize.Op;
+let multer = require("multer");
+let path = require("path");
 
 const CourseController = {
     index: async (req, res) => {
@@ -30,22 +32,53 @@ const CourseController = {
         }
     },
     create: async (req, res) => {
-        try {
-            let curso = await DB.Curso.create(req.body);
-
-            return res.status(200).json({
-                data: curso,
-                status: 200,
-                created: "ok"
-            })
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({
-                message: "Ocurrió un error al crear el curso",
-                error: error,
-            });
-        }
+        let pathCourse = path.join(__dirname, "./../../../../public/images/courses/");
+        let storage = multer.diskStorage({
+            destination: pathCourse,
+            filename: function (req, file, cb) {
+                cb(
+                    null,
+                    file.fieldname + "-" + Date.now() + "-" + file.originalname 
+                );
+            },
+        });
+        let upload = multer({ storage: storage }).single("imagen");
+        upload(req, res, async function (err) {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    message: "Ocurrió un error al subir la imagen",
+                    error: err,
+                });
+            }
+    
+            try {
+                let courseData = req.body;
+                if (!courseData.anio) {
+                    const now = new Date();
+                    courseData.anio = now.getFullYear();
+                }
+                if (req.file) {
+                    courseData.imagen = req.file.filename;
+                }
+                let course = await DB.Curso.create(courseData);
+    
+                return res.status(200).json({
+                    data: course,
+                    status: 200,
+                    created: "ok"
+                })
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    message: "Ocurrió un error al crear el curso",
+                    error: error,
+                });
+            }
+        })
     },
+    
+
     update: async (req, res) => {
         let id_curso = req.params.id;
         let datos_curso = req.body;
