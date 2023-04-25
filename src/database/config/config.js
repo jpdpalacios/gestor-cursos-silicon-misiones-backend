@@ -1,8 +1,8 @@
 module.exports = {
   "development": {
-    "username": process.env.DATA_BASE_USERNAME,
-    "password": process.env.DATA_BASE_PASSWORD,
-    "database": process.env.DATA_BASE,
+    "username": "root",
+    "password": null,
+    "database": "integrador",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

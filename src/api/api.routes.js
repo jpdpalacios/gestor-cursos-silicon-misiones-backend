@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const apiController = require('./apiController')
+const courseController = require('./Controllers/course/courseController')
+//const studentController = require('./Controllers/course/studentController')
+//const userController = require('./Controllers/course/userController')
 
-router.get('/', apiController.index)
-
+router.get('/courses', courseController.index)
 
 module.exports = router;
