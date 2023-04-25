@@ -52,6 +52,33 @@ const CourseController = {
             });
         }
     },
+    update: async (req, res) => {
+        let id_curso = req.params.id;
+        let datos_curso = req.body;
+
+        try {
+            let curso = await DB.Curso.findOne({ where: { id: id_curso } });
+            if (!curso) {
+                return res.status(404).json({
+                    message: "No se encontró el curso con el ID especificado",
+                });
+            }
+
+            await DB.sequelize.transaction(async (t) => {
+                await curso.update(datos_curso, { transaction: t });
+            });
+
+            return res.status(200).json({
+                message: "El curso ha sido actualizado exitosamente",
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: "Ocurrió un error al actualizar el curso",
+                error: error,
+            });
+        }
+    },
     delete: async (req, res) => {
         try {
             const curso = await DB.Curso.findOne({ where: { id: req.params.id } });
