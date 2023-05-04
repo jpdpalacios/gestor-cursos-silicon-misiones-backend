@@ -98,7 +98,7 @@ const CourseController = {
             filename: function (req, file, cb) {
               cb(
                 null,
-                file.fieldname + "-" + Date.now() + "-" + file.originalname
+                "http://localhost:8080/api/media/image/course/" + file.fieldname + "-" + Date.now() + "-" + file.originalname
               );
             },
           });
